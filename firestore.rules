@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidFarmer(data) {
+      return data.keys().hasAll([
+        'farmerId', 'fullName', 'dob', 'gender', 'mobileNumber',
+        'village', 'district', 'state', 'pinCode', 'cropName',
+        'landArea', 'status', 'registeredBy'
+      ]) &&
+      data.farmerId is string && data.farmerId.size() <= 64 &&
+      data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100 &&
+      data.dob is string && data.dob.size() <= 20 &&
+      data.gender in ['Male', 'Female', 'Other'] &&
+      data.mobileNumber is string && data.mobileNumber.size() >= 8 && data.mobileNumber.size() <= 15 &&
+      data.village is string && data.village.size() <= 100 &&
+      data.district is string && data.district.size() <= 100 &&
+      data.state is string && data.state.size() <= 100 &&
+      data.pinCode is string && data.pinCode.size() <= 10 &&
+      data.cropName is string && data.cropName.size() <= 100 &&
+      data.landArea is number && data.landArea >= 0 &&
+      data.status in ['Approved', 'Pending', 'Active'] &&
+      data.registeredBy is string && data.registeredBy.size() <= 128;
+    }
+
+    match /farmers/{farmerDocId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() &&
+        isValidId(farmerDocId) &&
+        isValidFarmer(incoming()) &&
+        incoming().registeredBy == request.auth.uid;
+      allow update: if isSignedIn() &&
+        isValidId(farmerDocId) &&
+        isValidFarmer(incoming()) &&
+        incoming().registeredBy == existing().registeredBy;
+      allow delete: if isSignedIn() &&
+        isValidId(farmerDocId) &&
+        existing().registeredBy == request.auth.uid;
+    }
+  }
+}

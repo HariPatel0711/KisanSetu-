@@ -1,0 +1,151 @@
+{
+  "entities": {
+    "farmer": {
+      "title": "Farmer",
+      "description": "Farmer profile record containing personal, address, and agricultural information",
+      "type": "object",
+      "properties": {
+        "farmerId": {
+          "type": "string",
+          "description": "Unique generated identifier for the farmer",
+          "maxLength": 64
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the farmer",
+          "maxLength": 100
+        },
+        "dob": {
+          "type": "string",
+          "description": "Date of birth in YYYY-MM-DD format",
+          "maxLength": 20
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender identity",
+          "enum": ["Male", "Female", "Other"]
+        },
+        "mobileNumber": {
+          "type": "string",
+          "description": "10-digit mobile number",
+          "maxLength": 15
+        },
+        "fatherOrSpouseName": {
+          "type": "string",
+          "description": "Father or spouse full name",
+          "maxLength": 100
+        },
+        "category": {
+          "type": "string",
+          "description": "Social category",
+          "maxLength": 50
+        },
+        "village": {
+          "type": "string",
+          "description": "Village or locality name",
+          "maxLength": 100
+        },
+        "taluk": {
+          "type": "string",
+          "description": "Sub-district or Taluka",
+          "maxLength": 100
+        },
+        "district": {
+          "type": "string",
+          "description": "District name",
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "description": "State name",
+          "maxLength": 100
+        },
+        "pinCode": {
+          "type": "string",
+          "description": "Postal pincode",
+          "maxLength": 10
+        },
+        "landArea": {
+          "type": "number",
+          "description": "Land holding size in acres"
+        },
+        "cropName": {
+          "type": "string",
+          "description": "Primary crop cultivated",
+          "maxLength": 100
+        },
+        "secondaryCrops": {
+          "type": "string",
+          "description": "Secondary crops description",
+          "maxLength": 200
+        },
+        "soilType": {
+          "type": "string",
+          "description": "Soil type classification",
+          "maxLength": 50
+        },
+        "irrigationSource": {
+          "type": "string",
+          "description": "Source of irrigation",
+          "maxLength": 50
+        },
+        "aadhaarLast4": {
+          "type": "string",
+          "description": "Last 4 digits of Aadhaar identification",
+          "maxLength": 4
+        },
+        "bankAccountLast4": {
+          "type": "string",
+          "description": "Last 4 digits of Bank Account",
+          "maxLength": 4
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of registration",
+          "enum": ["Approved", "Pending", "Active"]
+        },
+        "registeredBy": {
+          "type": "string",
+          "description": "User UID who registered the farmer",
+          "maxLength": 128
+        },
+        "registeredByEmail": {
+          "type": "string",
+          "description": "Email of user who registered the farmer",
+          "maxLength": 150
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of registration",
+          "maxLength": 40
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update",
+          "maxLength": 40
+        }
+      },
+      "required": [
+        "farmerId",
+        "fullName",
+        "dob",
+        "gender",
+        "mobileNumber",
+        "village",
+        "district",
+        "state",
+        "pinCode",
+        "cropName",
+        "landArea",
+        "status",
+        "registeredBy"
+      ]
+    }
+  },
+  "firestore": {
+    "/farmers/{farmerDocId}": {
+      "schema": "farmer",
+      "description": "Collection of registered farmer profiles"
+    }
+  }
+}

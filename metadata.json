@@ -1,0 +1,6 @@
+{
+  "name": "KisanSetu - Farmer Registration System",
+  "description": "Step-by-step farmer registration, profile verification, agricultural land and crop management dashboard powered by Firebase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
